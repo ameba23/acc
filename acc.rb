@@ -12,6 +12,7 @@ def coins_by_bittrex
 end
 
 def fiat_btc_rate(iso_currency = nil)
+
    1.0 / coinbase_rates["data"]["rates"][iso_currency || code].to_f
 end
 
@@ -23,19 +24,17 @@ total = 0.0
 data = CSV.read('figs.csv')
 
 data.each do |row|
-  puts "#{row}"
   if ['GBP','EUR','USD'].include?(row[0])
-    puts "is fiat"
     btc_amount = row[1].to_f * fiat_btc_rate(row[0])
-    puts "#{btc_amount}"
+    puts " #{row[0]} #{row[1]} = BTC #{btc_amount}"
     total += btc_amount
   else
     if row[0] == 'BTC' 
-      puts "adding #{row[1].to_f}"
+      puts " #{row[0]} #{row[1]} = BTC #{row[1].to_f}"
       total += row[1].to_f
     else
       btc_amount = row[1].to_f * fiat_btc_rate(row[0])
-      puts "non fiat: #{btc_amount}"
+      puts " #{row[0]} #{row[1]} = BTC #{btc_amount}"
       total += btc_amount
     end
   end
